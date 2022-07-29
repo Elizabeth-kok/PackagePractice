@@ -1,4 +1,4 @@
-# Huggingface Diffuser
+# Huggingface Diffusers
 
-Testing out text to image model by huggingface
+Testing out Hugging Face Diffusers Package (text to image)
 

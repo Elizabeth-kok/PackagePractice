@@ -15,3 +15,9 @@ Create a requirement.txt using the command below
 Runtime.txt : tell Heroku what type of runtime we want to use
 
 gitignore : put in the files that you don't want to be uploaded
+
+command >
+heroku login
+heroku create : will create our api
+heroku git:remote -a nameless-forest-38857
+git push heroku master

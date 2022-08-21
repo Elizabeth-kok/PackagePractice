@@ -1,0 +1,30 @@
+Gradient Descent is a form of mathematical optimization.
+The goal is to find optimal paramaters which minimize loss.
+Think of those parameters as trying to descent to the lowest point in a valley.
+The way we do this is by calculating the gradient of the loss function with
+respect to our parameter using calculus.
+The underlying algorithm is used in some of the most popular machine learning
+libraries including tensorflow pytorch and scikitlearn, a valuable concept to understand.
+
+目的是为了找w和b。
+y= wx+b
+loss = (y-yhat)**2 / N
+
+w,b,dldw,dldb = 0.0
+learning_rate=0.01
+N = x.shape[0]
+
+通过微积分找出dldw，dldb
+(y-(wx+b))**2 / N
+dldw += -2*xi*(yi-(w*xi+b))
+dldb += -2*(yi-(w*xi+b))
+
+通过以下方程式找到新的w和b
+w = w - learning_rate*(1/N)*dldw
+b = b - learning_rate*(1/N)*dldb
+
+再把新的w和b带入y= wx+b找出新的y， 然后再算损失（就一直循环代入新的dldw和dldb 再算出新的w和b）
+yhat = w*x + b
+loss = np.divide(np.sum((y-yhat) ** 2,axis=0),x.shape[0])
+
+***重点就是一直算出新的dldw和dldb 再算出新的w和b，然后loss就会慢慢下降***

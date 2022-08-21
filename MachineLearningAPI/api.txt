@@ -1,0 +1,17 @@
+API stands for application programming interface.
+Almost like the middle person between different applications, connecting stuff together.
+We could use this API and integrate it into a mobile application or web application
+and this will allow those different apps to communicate and use our machine learning model.
+
+HTML
+- get request : GET is used to request data from a specfied resource
+- post request : POST is used to send data to a server to create/update a resource
+
+Procfile : defines how we will start up
+
+Create a requirement.txt using the command below
+# pip freeze >requirements.txt
+
+Runtime.txt : tell Heroku what type of runtime we want to use
+
+gitignore : put in the files that you don't want to be uploaded

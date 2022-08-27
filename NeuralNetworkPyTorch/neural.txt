@@ -1,0 +1,87 @@
+Building a deep neural network using PyTorch.
+
+PyTorch:
+- An open source deep learning framework which is predominantly used in Python.
+- It accelerates the speed whehn you building deep learning models
+- Quite heavily used in state-of-the-art models and deep learning research
+
+1. Download the datasets
+"""
+train=datasets.MNIST(root="data", download=True, train=True, transform=ToTensor())
+dataset=DataLoader(train, 32)
+"""
+- Using the MNIST dataset(an image classification dataset)
+- 10 classes (0 to 9)
+- Download the datasets using the datasets class from torchvision
+- root="data" > Where we want to download the datasets
+- download=True
+- train=True > Get the train partition.
+- transform=ToTensor() > Data transformation that we want to apply. In this case, we want to transform it to a tensor.
+- dataset=DataLoader(train, 32) > Pass in the train data, how we want to batch up our datasets (32 images)
+
+2. Create Neural Network class
+- Create a ImageClassifier classes
+- Subclass it from the neural network module class from PyTorch
+- 2 functions : a. init b. forward
+
+3. init function
+- The forward func is like the call method inside of Tensorflow
+- __init__() function: Create a model, stack all our layers togother
+- Using the sequential API from PyTorch
+- Pass in convolutional neural network layers > nn.Conv2d(1,32,(3,3)) > 1 input channel , 32 kernels, shape 3x3
+- nn.ReLU() > Need some activations to handle non-linearities
+- By applying nn.Conv2d and nn.ReLu three times, we will be shaving off 2 picels off the height and the width of each image
+- Need to adjust that in our output layer
+- If you have an image of let’s say 28*28 shape, and you pass it through a 3by3 filter with a stride of 1, and 0 padding, then ur output Shape would be: 28-3 + 1 by 28-3+1. The general formula for shapes after passing through a conv layer is ((input_shape +2*padding size - filter size) / stride) + 1 and then floor the results, so if it’s 3.5 you should round to the bottom, and you will have 3
+- Stride is how far the filter moves in every step along one direction.
+- Output shape is the number of classes, we have 10 different classes (0 to 9) so ten outputs
+
+4. forward func
+- Take in our current instance(self) & x data
+- Return self.model and pass in our x value
+
+5. Create an instance of the neural network, create loss and optimizer
+- Instantiate our class
+- Instantiate the optimizer. Using Adam, pass in our classifier and the parameters and the learning rate
+- Instantiate the loss function > nn.CrossEntropyLoss
+
+6.　Training flow
+- Epochs ＝ 10, training for 10 epochs
+- Unpack the data into X and y
+- Send out x and y values to our gpu/cpu again
+- Make predictions (yhat)
+- In TF its just compile and fit , but in PyTorch you have to specify the yhat, loss
+
+7. Apply backprop
+- We have to zero out any existing gradient
+- Calculate gradient
+- Take a step and apply gradient descent
+
+8. Print out the loss for every batch using loss.items()
+
+9. Save model to environment
+
+Epoch 0 Loss is 0.015427209436893463
+Epoch 1 Loss is 0.0012553066480904818
+Epoch 2 Loss is 0.00016322676674462855
+Epoch 3 Loss is 3.3421139960410073e-05
+Epoch 4 Loss is 0.002825832227244973
+Epoch 5 Loss is 0.00011275964789092541
+Epoch 6 Loss is 0.0002988839987665415
+Epoch 7 Loss is 6.29072092124261e-05
+Epoch 8 Loss is 0.00045214733108878136
+Epoch 9 Loss is 1.2384703950374387e-05
+
+10. Make predictions
+- Load up the model
+- clf.load_state_dict(load(f)) > Load the weight into our classifier
+- Import image > to tensor　> unsqueeze > send to gpu/cpu
+- Unsqueeze it because we are passing in a single sample
+-　If you look at the shape of the array before and after, you see that before
+　　it was (4,) and after it is (1, 4) (when second parameter is 0) and (4, 1)
+　　(when second parameter is 1). So a 1 was inserted in the shape of the array
+　　at axis 0 or 1, depending on the value of the second parameter.
+　　That is opposite of np.squeeze() (nomenclature borrowed from MATLAB) which
+　　removes axes of size 1 (singletons).
+- Use torch.argmax to get the final prediction
+- Only can predict images that are 28 * 28
